@@ -91,7 +91,7 @@ function addTask() {
   const taskText = taskInput.value.trim();
 
   if (taskText === "") {
-    alert("Kripya koi task likhein!");
+    alert("Please Enter Your Task...!");
     return;
   }
 
@@ -118,7 +118,7 @@ function addTask() {
 
 function editTask(index) {
   const updatedText = prompt(
-    "Task edit karein:",
+    "Edit Your Task.:",
     tasks[index].text
   );
 
@@ -129,7 +129,7 @@ function editTask(index) {
 
   // Empty task allow nahi
   if (updatedText.trim() === "") {
-    alert("Task khaali nahi ho sakta!");
+    alert("Task Can't be Empty!");
     return;
   }
 
@@ -155,7 +155,7 @@ function updateCounter() {
   ).length;
 
   counter.textContent =
-    `${pendingTasks} tasks baaki hain (Total: ${totalTasks})`;
+    `${pendingTasks} Tasks are pending.(Total: ${totalTasks})`;
 }
 
 // ===============================
