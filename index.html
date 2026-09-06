@@ -1,26 +1,84 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My To-Do List</title>
+
+  <title>Deresa - To-Do List</title>
+
+  <!-- CSS File -->
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <div class="container">
+
     <h1>📝 My To-Do List</h1>
 
+    <!-- Task Input Section -->
     <div class="input-box">
-      <input type="text" id="taskInput" placeholder="Enter Your Tasks...">
-      <button id="addBtn">Add</button>
+
+      <!-- Task Input -->
+      <input
+        type="text"
+        id="taskInput"
+        placeholder="Enter a new task..."
+      >
+
+      <!-- Priority -->
+      <select id="priorityInput">
+
+        <option value="low">
+          Low Priority
+        </option>
+
+        <option value="medium" selected>
+          Medium Priority
+        </option>
+
+        <option value="high">
+          High Priority
+        </option>
+
+      </select>
+
+      <!-- Due Date -->
+      <input
+        type="date"
+        id="dueDateInput"
+      >
+
+      <!-- Add Button -->
+      <button id="addBtn">
+        Add Task
+      </button>
+
     </div>
 
+
+    <!-- Task List -->
     <ul id="taskList"></ul>
 
-    <p class="counter" id="counter">0 Task Pending...</p>
+
+    <!-- Task Counter -->
+    <p id="counter">
+      0 tasks pending
+    </p>
+
   </div>
 
-  <script src="script.js"></script>
+
+  <!-- JavaScript Files -->
+
+  <!-- LocalStorage -->
+  <script src="storage.js"></script>
+
+  <!-- Task Logic -->
+  <script src="taskManager.js"></script>
+
+  <!-- Main App -->
+  <script src="app.js"></script>
+
 </body>
 </html>
