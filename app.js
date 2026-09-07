@@ -30,22 +30,27 @@ function renderTasks() {
   taskList.innerHTML = "";
 
 
-  tasks.forEach(task => {
+  // Search + Filtered Tasks
+  const filteredTasks =
+    getFilteredTasks();
+
+
+  filteredTasks.forEach(task => {
 
     const li =
       document.createElement("li");
 
 
-    // Completed Task
     if (task.completed) {
-      li.classList.add("completed");
+
+      li.classList.add(
+        "completed"
+      );
+
     }
 
 
-    // =========================
     // TASK TEXT
-    // =========================
-
     const taskText =
       document.createElement("span");
 
@@ -69,10 +74,7 @@ function renderTasks() {
     );
 
 
-    // =========================
     // TASK DETAILS
-    // =========================
-
     const details =
       document.createElement("div");
 
@@ -81,8 +83,7 @@ function renderTasks() {
     );
 
 
-    // Priority
-
+    // PRIORITY
     const priority =
       document.createElement("span");
 
@@ -95,8 +96,7 @@ function renderTasks() {
       `Priority: ${task.priority}`;
 
 
-    // Due Date
-
+    // DUE DATE
     const dueDate =
       document.createElement("span");
 
@@ -111,14 +111,10 @@ function renderTasks() {
 
 
     details.appendChild(priority);
-
     details.appendChild(dueDate);
 
 
-    // =========================
     // EDIT BUTTON
-    // =========================
-
     const editBtn =
       document.createElement("button");
 
@@ -159,10 +155,7 @@ function renderTasks() {
     );
 
 
-    // =========================
     // DELETE BUTTON
-    // =========================
-
     const deleteBtn =
       document.createElement("button");
 
@@ -186,16 +179,10 @@ function renderTasks() {
     );
 
 
-    // =========================
     // ADD TO LI
-    // =========================
-
     li.appendChild(taskText);
-
     li.appendChild(details);
-
     li.appendChild(editBtn);
-
     li.appendChild(deleteBtn);
 
     taskList.appendChild(li);
@@ -235,8 +222,6 @@ function addTask() {
   }
 
 
-  // Create Task
-
   createTask(
     taskText,
     priority,
@@ -244,12 +229,8 @@ function addTask() {
   );
 
 
-  // UI Update
-
   renderTasks();
 
-
-  // Clear Inputs
 
   taskInput.value = "";
 
@@ -288,22 +269,20 @@ function updateCounter() {
 // EVENT LISTENERS
 // =========================
 
-// Add Button
-
 addBtn.addEventListener(
   "click",
   addTask
 );
 
 
-// Enter Key
-
 taskInput.addEventListener(
   "keypress",
   event => {
 
     if (event.key === "Enter") {
+
       addTask();
+
     }
 
   }
