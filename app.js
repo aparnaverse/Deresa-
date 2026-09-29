@@ -22,6 +22,86 @@ const counter =
 
 
 // =========================
+// GET DUE DATE STATUS
+// =========================
+
+function getDueDateStatus(task) {
+
+  if (!task.dueDate) {
+    return {
+      text: "No due date",
+      className: "no-date"
+    };
+  }
+
+  // Completed tasks
+  if (task.completed) {
+    return {
+      text: `✓ Completed • Due: ${formatDate(task.dueDate)}`,
+      className: "completed-date"
+    };
+  }
+
+  const today = new Date();
+
+  today.setHours(0, 0, 0, 0);
+
+  const dueDate =
+    new Date(`${task.dueDate}T00:00:00`);
+
+  dueDate.setHours(0, 0, 0, 0);
+
+
+  // Overdue
+  if (dueDate < today) {
+
+    return {
+      text: `🔴 Overdue • Due: ${formatDate(task.dueDate)}`,
+      className: "overdue"
+    };
+
+  }
+
+
+  // Due today
+  if (dueDate.getTime() === today.getTime()) {
+
+    return {
+      text: `🟠 Due Today • ${formatDate(task.dueDate)}`,
+      className: "due-today"
+    };
+
+  }
+
+
+  // Upcoming
+  return {
+    text: `🟢 Upcoming • ${formatDate(task.dueDate)}`,
+    className: "upcoming"
+  };
+
+}
+
+
+// =========================
+// FORMAT DATE
+// =========================
+
+function formatDate(dateString) {
+
+  const date =
+    new Date(`${dateString}T00:00:00`);
+
+  return date.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  });
+
+}
+
+
+// =========================
 // RENDER TASKS
 // =========================
 
@@ -41,16 +121,18 @@ function renderTasks() {
       document.createElement("li");
 
 
+    // Completed task
     if (task.completed) {
 
-      li.classList.add(
-        "completed"
-      );
+      li.classList.add("completed");
 
     }
 
 
+    // =========================
     // TASK TEXT
+    // =========================
+
     const taskText =
       document.createElement("span");
 
@@ -74,7 +156,10 @@ function renderTasks() {
     );
 
 
+    // =========================
     // TASK DETAILS
+    // =========================
+
     const details =
       document.createElement("div");
 
@@ -83,7 +168,10 @@ function renderTasks() {
     );
 
 
+    // =========================
     // PRIORITY
+    // =========================
+
     const priority =
       document.createElement("span");
 
@@ -96,25 +184,46 @@ function renderTasks() {
       `Priority: ${task.priority}`;
 
 
+    // =========================
     // DUE DATE
+    // =========================
+
     const dueDate =
       document.createElement("span");
 
+    const dueStatus =
+      getDueDateStatus(task);
+
     dueDate.classList.add(
-      "due-date"
+      "due-date",
+      dueStatus.className
     );
 
     dueDate.textContent =
-      task.dueDate
-        ? `Due: ${task.dueDate}`
-        : "No due date";
+      dueStatus.text;
 
 
     details.appendChild(priority);
+
     details.appendChild(dueDate);
 
 
+    // =========================
+    // BUTTON CONTAINER
+    // =========================
+
+    const actions =
+      document.createElement("div");
+
+    actions.classList.add(
+      "task-actions"
+    );
+
+
+    // =========================
     // EDIT BUTTON
+    // =========================
+
     const editBtn =
       document.createElement("button");
 
@@ -155,7 +264,10 @@ function renderTasks() {
     );
 
 
+    // =========================
     // DELETE BUTTON
+    // =========================
+
     const deleteBtn =
       document.createElement("button");
 
@@ -171,19 +283,42 @@ function renderTasks() {
       "click",
       () => {
 
-        deleteTask(task.id);
+        const confirmDelete =
+          confirm(
+            "Are you sure you want to delete this task?"
+          );
 
-        renderTasks();
+
+        if (confirmDelete) {
+
+          deleteTask(task.id);
+
+          renderTasks();
+
+        }
 
       }
     );
 
 
+    // =========================
+    // ADD BUTTONS
+    // =========================
+
+    actions.appendChild(editBtn);
+
+    actions.appendChild(deleteBtn);
+
+
+    // =========================
     // ADD TO LI
+    // =========================
+
     li.appendChild(taskText);
+
     li.appendChild(details);
-    li.appendChild(editBtn);
-    li.appendChild(deleteBtn);
+
+    li.appendChild(actions);
 
     taskList.appendChild(li);
 
@@ -232,6 +367,7 @@ function addTask() {
   renderTasks();
 
 
+  // Reset inputs
   taskInput.value = "";
 
   priorityInput.value =
@@ -260,7 +396,7 @@ function updateCounter() {
 
 
   counter.textContent =
-    `${pending} tasks pending (Total: ${total})`;
+    `${pending} tasks pending • Total: ${total}`;
 
 }
 
